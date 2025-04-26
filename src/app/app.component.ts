@@ -5,8 +5,9 @@ import { RouterOutlet } from '@angular/router';
   selector: 'mbs-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'proyecto-base-front';
+  title: string = 'proyecto-base-front';
 }
