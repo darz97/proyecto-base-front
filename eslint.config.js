@@ -4,12 +4,14 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const prettierRules = require('eslint-plugin-prettier/recommended');
 const boundaries = require('eslint-plugin-boundaries');
+const importPlugin = require('eslint-plugin-import');
 
 module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
     plugins: {
       boundaries,
+      import: importPlugin, // <-- Agregamos el plugin de import
     },
 
     extends: [
@@ -53,7 +55,6 @@ module.exports = tseslint.config(
           mode: 'file',
           pattern: 'main.ts',
           basePattern: 'src',
-          baseCapture: ['app'],
         },
         {
           type: 'app',
@@ -104,8 +105,17 @@ module.exports = tseslint.config(
           propertyDeclaration: true,
         },
       ],
+      '@typescript-eslint/array-type': [
+        'error', 
+        {
+          default: 'array', // Esto asegura que se usen tipos como `number[]` en lugar de `Array<number>`
+        }
+      ],
       '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
+      'max-params': ['warn', 4],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      
       quotes: [
         'error',
         'single',
@@ -121,15 +131,15 @@ module.exports = tseslint.config(
           rules: [
             {
               from: 'core',
-              allow: ['core'],
+              allow: ['core', 'env'],
             },
             {
               from: 'shared',
-              allow: ['shared', 'core'],
+              allow: ['shared', 'core', 'env'],
             },
             {
               from: 'feature',
-              allow: ['shared', 'core'],
+              allow: ['shared', 'core', 'env'],
             },
             {
               from: 'main',
@@ -137,9 +147,49 @@ module.exports = tseslint.config(
             },
             {
               from: 'app',
-              allow: ['env', 'app', 'core', 'shared', 'feature'],
+              allow: ['env', 'app', 'core', 'shared'],
             },
           ],
+        },
+      ],
+
+      // 👇 Agregado: Orden de imports limpio y ordenado
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin', // Node.js, Angular (@angular/core)
+            'external', // npm libraries (rxjs, lodash, etc)
+            'internal', // src/app/**
+            'parent', // ../
+            'sibling', // ./
+            'index', // index.ts
+            'object', // import 'zone.js';
+            'type', // import type { X }
+          ],
+          pathGroups: [
+            {
+              pattern: 'src/app/core/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: 'src/app/shared/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: 'src/app/feature/**',
+              group: 'internal',
+              position: 'before',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          'newlines-between': 'never',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
         },
       ],
     },
@@ -153,20 +203,6 @@ module.exports = tseslint.config(
     ],
     rules: {
       '@angular-eslint/template/prefer-self-closing-tags': ['error'],
-      '@angular-eslint/template/attributes-order': [
-        'error',
-        {
-          alphabetical: false,
-          order: [
-            'STRUCTURAL_DIRECTIVE',
-            'TEMPLATE_REFERENCE',
-            'ATTRIBUTE_BINDING',
-            'INPUT_BINDING',
-            'TWO_WAY_BINDING',
-            'OUTPUT_BINDING',
-          ],
-        },
-      ],
     },
   }
 );
