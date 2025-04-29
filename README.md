@@ -1,59 +1,109 @@
-# ProyectoBaseFront
+# Angular Standalone App – Código limpio, modular y escalable 🧱🚀
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
+Este proyecto Angular fue creado utilizando arquitectura **standalone**, modularización en capas (`core`, `shared`, `feature`), y una configuración avanzada de **ESLint** para mantener un código limpio, consistente y escalable.
 
-## Development server
+---
 
-To start a local development server, run:
+## 📦 Estructura del Proyecto
 
-```bash
-ng serve
+```plaintext
+src/
+├── app/
+│   ├── core/       # Singleton services, guards, interceptors
+│   ├── shared/     # Módulos comunes: CommonModule, FormsModule, pipes, etc.
+│   ├── feature/    # Módulos específicos por feature
+│   └── app.config.ts
+├── environments/   # Configuración de entornos
+├── main.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Principales Características
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### ✅ Arquitectura modular y standalone
 
-```bash
-ng generate component component-name
+- Uso de componentes standalone en vez de `@NgModule` donde es posible.
+- Reutilización de módulos comunes a través de un archivo `sharedImports.ts`.
+
+### ✅ ESLint avanzado
+
+ESLint está configurado con:
+
+- [`@typescript-eslint`](https://typescript-eslint.io/)
+- [`angular-eslint`](https://github.com/angular-eslint/angular-eslint)
+- [`eslint-plugin-boundaries`](https://github.com/insidewarehouse/eslint-plugin-boundaries)
+- [`eslint-plugin-import`](https://github.com/import-js/eslint-plugin-import)
+- [`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier)
+
+---
+
+## 📏 Reglas de Estilo y Buenas Prácticas
+
+### 🧠 Estructura por capas
+
+Usamos `eslint-plugin-boundaries` para restringir dependencias entre capas:
+
+| Desde     | Puede importar de              |
+| --------- | ------------------------------ |
+| `core`    | `core`, `env`                  |
+| `shared`  | `shared`, `core`, `env`        |
+| `feature` | `shared`, `core`, `env`        |
+| `app`     | `env`, `app`, `core`, `shared` |
+| `main.ts` | `app`                          |
+
+---
+
+### ⚠️ Reglas importantes de ESLint
+
+- ❌ **Prohibido** usar `Array<T>` → Usar `T[]` (`@typescript-eslint/array-type`)
+- ⚠️ `any` solo lanza advertencia, pero se recomienda evitarlo
+- ❌ Prohibido `console.log` en producción (`no-console` solo permite `console.warn`, `console.error`)
+- ⚠️ Límite de parámetros por función: máx. 4 (`max-params`)
+- ✅ Uso obligatorio de tipos explícitos en funciones y parámetros públicos (`typedef`, `explicit-function-return-type`)
+- ✅ Uso de comillas simples, salvo cuando se requieran dobles (`quotes`)
+- ✅ Orden de imports estricto (`import/order`) sin líneas en blanco
+
+---
+
+## 🔍 Orden de Imports
+
+Agrupados y ordenados alfabéticamente:
+
+1. Builtin (ej: `@angular/core`)
+2. External (ej: `rxjs`, `lodash`)
+3. Internal (`src/app/**`)
+4. Parent (`../`)
+5. Sibling (`./`)
+6. Index (`index.ts`)
+7. Side effect (`import 'zone.js'`)
+8. Types (`import type { ... }`)
+
+---
+
+## 📦 sharedImports
+
+```ts
+import { NgModuleType } from '@angular/core';
+
+export const sharedImports: NgModuleType<any>[] = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+];
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+✅ Solo acepta módulos (`@NgModule`). Si agregas un componente, lanza error.
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 📄 Reglas HTML
 
-To build the project run:
+Activadas por `angular-eslint/template`:
 
-```bash
-ng build
-```
+- `prefer-self-closing-tags` ✅
+- Accesibilidad activada (`templateAccessibility`)
+- Integración con Prettier
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
