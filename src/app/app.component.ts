@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MainLayoutComponent } from '@layout/main-layout/main-layout.component';
 
 @Component({
   selector: 'mbs-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
+  imports: [MainLayoutComponent],
+  template: ` <mbs-main-layout /> `,
   standalone: true,
 })
 export class AppComponent {

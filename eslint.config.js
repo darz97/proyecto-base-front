@@ -45,6 +45,10 @@ module.exports = tseslint.config(
           capture: ['feature'],
         },
         {
+          type: 'layout',
+          pattern: 'src/app/layout',
+        },
+        {
           type: 'env',
           pattern: 'environments',
           mode: 'folder',
@@ -137,8 +141,13 @@ module.exports = tseslint.config(
               from: 'shared',
               allow: ['shared', 'core', 'env'],
             },
+            
             {
               from: 'feature',
+              allow: ['shared', 'core', 'env'],
+            },
+            {
+              from: 'layout',
               allow: ['shared', 'core', 'env'],
             },
             {
@@ -147,7 +156,7 @@ module.exports = tseslint.config(
             },
             {
               from: 'app',
-              allow: ['env', 'app', 'core', 'shared'],
+              allow: ['env', 'app', 'core', 'shared','layout'],
             },
           ],
         },
