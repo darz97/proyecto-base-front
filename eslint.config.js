@@ -9,9 +9,18 @@ const importPlugin = require('eslint-plugin-import');
 module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+  
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: __dirname,
+      },
+
+    },
     plugins: {
+      // @ts-ignore
       boundaries,
-      import: importPlugin, // <-- Agregamos el plugin de import
+      import: importPlugin, 
     },
 
     extends: [
@@ -20,6 +29,7 @@ module.exports = tseslint.config(
       ...tseslint.configs.stylistic,
       ...angular.configs.tsRecommended,
       prettierRules,
+      // @ts-ignore
       boundaries.configs.strict,
     ],
     settings: {
@@ -75,7 +85,7 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'attribute',
-          prefix: 'mbs',
+          prefix: 'app',
           style: 'camelCase',
         },
       ],
@@ -83,10 +93,68 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'element',
-          prefix: 'mbs',
+          prefix: 'app',
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/no-conflicting-lifecycle': 'error',
+      '@angular-eslint/no-input-rename': 'error',
+      '@angular-eslint/no-inputs-metadata-property': 'error',
+      '@angular-eslint/no-output-native': 'error',
+      '@angular-eslint/no-output-on-prefix': 'error',
+      '@angular-eslint/no-output-rename': 'error',
+      '@angular-eslint/no-outputs-metadata-property': 'error',
+      '@angular-eslint/use-lifecycle-interface': 'error',
+      '@angular-eslint/use-pipe-transform-interface': 'error',
+      // TypeScript
+    
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        { accessibility: 'explicit', overrides: { constructors: 'no-public' } },
+      ],
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
+      '@typescript-eslint/max-params': 'error',
+      '@typescript-eslint/no-magic-numbers': 'error',
+      '@typescript-eslint/consistent-generic-constructors': 'error',
+      '@typescript-eslint/member-ordering': 'error',
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'default',
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+        },
+        { selector: 'property', format: null },
+        {
+          selector: 'variable',
+          format: ['camelCase', 'UPPER_CASE'],
+          leadingUnderscore: 'allow',
+        },
+        { selector: 'typeLike', format: ['PascalCase'] },
+      ],
+      '@typescript-eslint/no-empty-function': 'error',
+      '@typescript-eslint/no-misused-new': 'error',
+      '@typescript-eslint/no-namespace': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-shadow': ['error', { hoist: 'all' }],
+      '@typescript-eslint/no-empty-interface': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
+      '@typescript-eslint/no-use-before-define': 'error',
+      '@typescript-eslint/no-var-requires': 'error',
+      '@typescript-eslint/prefer-for-of': 'error',
+      '@typescript-eslint/prefer-function-type': 'error',
+      '@typescript-eslint/prefer-namespace-keyword': 'error',
+      '@typescript-eslint/triple-slash-reference': [
+        'error',
+        { path: 'always', types: 'prefer-import', lib: 'always' },
+      ],
+      '@typescript-eslint/unified-signatures': 'error',
+      eqeqeq: 'error',
+      '@typescript-eslint/no-duplicate-enum-values': 'error',
+      '@typescript-eslint/no-for-in-array': 'error',
+      '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+      '@typescript-eslint/prefer-readonly':'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       '@typescript-eslint/explicit-function-return-type': [
         'error',
         {
@@ -96,7 +164,6 @@ module.exports = tseslint.config(
           allowDirectConstAssertionInArrowFunctions: true,
         },
       ],
-      '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/typedef': [
         'error',
         {
@@ -112,14 +179,12 @@ module.exports = tseslint.config(
       '@typescript-eslint/array-type': [
         'error', 
         {
-          default: 'array', // Esto asegura que se usen tipos como `number[]` en lugar de `Array<number>`
+          default: 'array',
         }
       ],
       '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
-      'max-params': ['warn', 4],
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
-      
+      'max-params': ['warn', 4],      
       quotes: [
         'error',
         'single',
@@ -211,7 +276,8 @@ module.exports = tseslint.config(
       prettierRules,
     ],
     rules: {
-      '@angular-eslint/template/prefer-self-closing-tags': ['error'],
+      '@angular-eslint/template/prefer-self-closing-tags': 'error',
+      '@angular-eslint/template/prefer-control-flow': 'error',
     },
   }
 );

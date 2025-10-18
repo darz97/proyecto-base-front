@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { MainLayoutComponent } from '@layout/main-layout/main-layout.component';
 
 @Component({
-  selector: 'mbs-root',
+  selector: 'app-root',
   imports: [MainLayoutComponent],
-  template: ` <mbs-main-layout /> `,
+  template: ` <app-main-layout /> `,
   standalone: true,
 })
 export class AppComponent {
-  title: string = 'proyecto-base-front';
+  private readonly title: string = 'proyecto-base-front';
 }
